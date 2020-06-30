@@ -52,13 +52,13 @@ object ScalastyleCodeInspection {
     private def findConfigFile(dir: VirtualFile, possibleConfigFileNames: Seq[String]): Option[VirtualFile] =
       possibleConfigFileNames.flatMap(name => Option(dir.findChild(name))).headOption
 
-    def findIn(project: Project, possibleConfigFileNames: Seq[String]): Option[VirtualFile] = {
-      val root = ProjectUtil.guessProjectDir(project)
-      if (root == null) return None
-
-      val dirs = possibleLocations.flatMap(name => Option(root.findChild(name))) :+ root
-      dirs.flatMap(findConfigFile(_, possibleConfigFileNames)).headOption
-    }
+    def findIn(project: Project, possibleConfigFileNames: Seq[String]): Option[VirtualFile] =
+      ProjectUtil
+        .guessProjectDir(project).toOption
+        .flatMap { root =>
+          val dirs = possibleLocations.flatMap(name => Option(root.findChild(name))) :+ root
+          dirs.flatMap(findConfigFile(_, possibleConfigFileNames)).headOption
+        }
   }
 
   def latest(scalastyleXml: VirtualFile): ScalastyleConfiguration = {
@@ -115,6 +115,6 @@ object ScalastyleCodeInspection {
 
   private def checkWithScalastyle(file: PsiFile, config: ScalastyleConfiguration): List[Message[SourceSpec]] = {
     val checker = new ScalastyleChecker[SourceSpec](None)
-    checker.checkFiles(config, Seq(new SourceSpec(file.getName, file.getText)))
+    checker.checkFiles(config, Seq(new SourceSpec(file.name, file.getText)))
   }
 }
