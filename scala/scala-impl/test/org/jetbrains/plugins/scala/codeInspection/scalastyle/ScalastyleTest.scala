@@ -2,6 +2,7 @@ package org.jetbrains.plugins.scala.codeInspection.scalastyle
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.project.{Project, ProjectUtil}
 import com.intellij.openapi.vfs.{VfsUtil, VirtualFile}
 import org.jetbrains.plugins.scala.codeInspection.ScalaInspectionTestBase
 import org.jetbrains.plugins.scala.extensions._
@@ -32,7 +33,7 @@ class ScalastyleTest extends ScalaInspectionTestBase {
       dir.findChild(file).toOption.getOrElse(dir.createChildData(this, file))
 
     WriteAction.runAndWait { () =>
-      val baseDir = VfsUtil.createDirectoryIfMissing(getProject.getBasePath)
+      val baseDir = ProjectUtil.guessProjectDir(getProject)
       val file = getOrCreateFile(baseDir, "scalastyle-config.xml")
       VfsUtil.saveText(file, configString)
     }
