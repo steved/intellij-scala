@@ -12,6 +12,7 @@ import com.intellij.psi._
 import com.intellij.psi.presentation.java.ClassPresentationUtil
 import com.intellij.psi.search.searches.ClassInheritorsSearch
 import javax.swing.{Icon, ListCellRenderer}
+import org.jetbrains.annotations.Nls
 import org.jetbrains.plugins.scala.annotator.gutter.GutterUtil.namedParent
 import org.jetbrains.plugins.scala.extensions._
 import org.jetbrains.plugins.scala.lang.psi.ScalaPsiUtil
@@ -37,11 +38,11 @@ object ScalaMarkerType {
   }
 
   private[this] def navigateToSuperMember[T <: NavigatablePsiElement](
-    event:           MouseEvent,
-    members:         Array[T],
-    title:           String,
-    findUsagesTitle: String,
-    renderer:        ListCellRenderer[T] = newCellRenderer.asInstanceOf[ListCellRenderer[T]]
+    event:                MouseEvent,
+    members:              Array[T],
+    @Nls title:           String,
+    @Nls findUsagesTitle: String,
+    renderer:             ListCellRenderer[T] = newCellRenderer.asInstanceOf[ListCellRenderer[T]]
   ): Unit = PsiElementListNavigator.openTargets(event, members, title, findUsagesTitle, renderer)
 
   private[this] def navigateToSuperMethod(
