@@ -30,7 +30,7 @@ private class RegisterCompilationListener
 
   override def projectOpened(project: Project): Unit = {
     val listener = new MyPsiTreeChangeListener(project)
-    PsiManager.getInstance(project).addPsiTreeChangeListener(listener, project.unloadAwareDisposable)
+    PsiManager.getInstance(project).addPsiTreeChangeListener(listener, project) // TODO use UnloadAwareDisposable
   }
 }
 
